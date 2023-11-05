@@ -1,11 +1,19 @@
 import setuptools
 
+def get_version(rel_path: str) -> str:
+  for line in read(rel_path).splitlines():
+    if line.startswith("__version__"):
+      delim = '"' if '"' in line else "'"
+      return line.split(delim)[1]
+  raise RuntimeError("Unable to find version string.")
+
 with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+  long_description = fh.read()
 
 setuptools.setup(
     name="xmkvdt",
-    version="0.1.0",
+    version=get_version("xmkvdt/__init__.py"),
+    #version="0.1.0",
     author="tantanGH",
     author_email="tantanGH@github",
     license='MIT',
