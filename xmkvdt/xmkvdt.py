@@ -233,12 +233,10 @@ class BMPtoVDT:
 
       print(f"ofs_x = {ofs_x}, ofs_y = {ofs_y}")
 
-      #frame_voice_size = len(pcm_data) // num_frames
-      #frame_voice_size &= 0xfffffe if pcm_freq == 15625 else 0xfffffc
-      #frame_voice_size &= 0xfffffc
-      
       pcm_size_1sec = 7800 if pcm_freq == 15625 else pcm_freq * 4
       frame_voice_size = pcm_size_1sec // fps
+      if pcm_freq > 15625:
+        frame_voice_size &= 0xfffffc
       
       written_pcm_size = 0
 
