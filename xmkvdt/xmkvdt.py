@@ -330,7 +330,6 @@ class FPS:
     15: 13.865,
     20: 18.486,
     30: 27.729,
-    60: 55.458,
   }
 
   fps_detail_384 = {
@@ -343,9 +342,7 @@ class FPS:
     12: 11.254,
     15: 14.068,
     20: 18.757,
-    24: 22.509,
     30: 28.136,
-    60: 56.272,
   }
 
   def get_fps_detail(self, screen_width, fps):
@@ -465,7 +462,7 @@ def main():
   parser.add_argument("-pf", "--pcm_freq", help="16bit pcm frequency", type=int, default=15625, choices=[15625, 32000, 44100, 48000])
   parser.add_argument("-ib", "--use_ibit", help="use i bit for color reduction", action='store_true')
   parser.add_argument("-db", "--deband", help="use debanding filter", action='store_true')
-  parser.add_argument("-sp", "--sharpness", help="sharpness (max 1.5)", type=float, default=0.0)
+  parser.add_argument("-sp", "--sharpness", help="sharpness (max 1.5)", type=float, default=0.6)
   parser.add_argument("-bm", "--preserve_bmp", help="preserve output bmp folder", action='store_true')
 
   args = parser.parse_args()
@@ -481,7 +478,7 @@ def main():
     pcm_wip_file = f"_wip_pcm.dat"
     adpcm_wip_file = None
 
-  fps_detail = FPS().get_fps_detail(256, args.fps)
+  fps_detail = args.fps #FPS().get_fps_detail(256, args.fps)
   if fps_detail is None:
     print("error: unknown fps")
     return 1
