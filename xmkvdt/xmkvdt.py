@@ -494,9 +494,9 @@ def main():
             pcm_wip_file, adpcm_wip_file, vdt_data_file):
     return 1
 
-  if pcm_wip_file:
-    if os.path.isfile(pcm_wip_file):
-	    os.remove(pcm_wip_file)
+#  if pcm_wip_file:
+#    if os.path.isfile(pcm_wip_file):
+#	    os.remove(pcm_wip_file)
 
   if adpcm_wip_file:
     if os.path.isfile(adpcm_wip_file):
