@@ -251,7 +251,7 @@ class BMPtoVDT:
       print(f"frame voice size = {frame_voice_size}, pcm_rate_type = {pcm_rate_type}")
 
       f.write("SiV".encode('ascii'))                  # eye catch
-      f.write(comment.encode('cp932', errors='ignore'))                # comment
+      f.write(f"{comment}\n".encode('cp932', errors='ignore'))                # comment
 
       poster_data_size = 128 * 120 * 2
       f.write(poster_data_size.to_bytes(4, 'big'))    # poster data size
