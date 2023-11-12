@@ -204,7 +204,7 @@ class ADPCM:
 class BMPtoVDT:
  
   def convert(self, output_file, src_image_dir, screen_width, screen_height, view_width, view_height, use_ibit, fps, \
-              pcm_freq, pcm_wip_file, adpcm_wip_file):
+              pcm_freq, pcm_wip_file, adpcm_wip_file, comment):
 
     rc = 0
 
@@ -250,8 +250,8 @@ class BMPtoVDT:
 
       print(f"frame voice size = {frame_voice_size}, pcm_rate_type = {pcm_rate_type}")
 
-      f.write("SiV ".encode('ascii'))                    # eye catch
-      f.write(f"built with xmkvdt\n".encode('ascii'))    # comment
+      f.write("SiV".encode('ascii'))                  # eye catch
+      f.write(comment.encode('cp932', errors='ignore'))                # comment
 
       poster_data_size = 128 * 120 * 2
       f.write(poster_data_size.to_bytes(4, 'big'))    # poster data size
@@ -311,43 +311,6 @@ class BMPtoVDT:
     print()
 
     return rc
-
-#
-#  fps class
-#
-class FPS:
-
-  fps_detail_256 = {
-    2: 1.849,
-    3: 2.773,
-    4: 3.697,
-    5: 4.622,
-    6: 5.546,
-    10: 9.243,
-    12: 11.092,
-    15: 13.865,
-    20: 18.486,
-    30: 27.729,
-  }
-
-  fps_detail_384 = {
-     2: 1.876,
-     3: 2.814,
-     4: 3.751,
-     5: 4.689,
-     6: 5.627,
-    10: 9.379,
-    12: 11.254,
-    15: 14.068,
-    20: 18.757,
-    30: 28.136,
-  }
-
-  def get_fps_detail(self, screen_width, fps):
-    if screen_width == 384:
-      return FPS.fps_detail_384[fps]
-    else:
-      return FPS.fps_detail_256[fps]
 
 #
 #  stage 1 mov to adpcm/pcm
@@ -429,11 +392,11 @@ def stage2(src_file, src_cut_ofs, src_cut_len, fps_detail, view_width, view_heig
 #
 #  stage 3 bmp/pcm to vdt
 #
-def stage3(output_bmp_dir, view_width, view_height, use_ibit, fps, pcm_freq, pcm_wip_file, adpcm_wip_file, vdt_data_file):
+def stage3(output_bmp_dir, view_width, view_height, use_ibit, fps, pcm_freq, pcm_wip_file, adpcm_wip_file, comment, vdt_data_file):
 
   print("[STAGE 3] started.")
 
-  if BMPtoVDT().convert(vdt_data_file, output_bmp_dir, 128, 120, view_width, view_height, use_ibit, fps, pcm_freq, pcm_wip_file, adpcm_wip_file) != 0:
+  if BMPtoVDT().convert(vdt_data_file, output_bmp_dir, 128, 120, view_width, view_height, use_ibit, fps, pcm_freq, pcm_wip_file, adpcm_wip_file, comment) != 0:
     print("error: BMP to VDT conversion failed.")
     return 1
   
@@ -461,6 +424,7 @@ def main():
   parser.add_argument("-ib", "--use_ibit", help="use i bit for color reduction", action='store_true')
   parser.add_argument("-db", "--deband", help="use debanding filter", action='store_true')
   parser.add_argument("-sp", "--sharpness", help="sharpness (max 1.5)", type=float, default=0.6)
+  parser.add_argument("-cm", "--comment", help="comment", default="build with xmkvdt")
   parser.add_argument("-bm", "--preserve_bmp", help="preserve output bmp folder", action='store_true')
 
   args = parser.parse_args()
@@ -476,7 +440,7 @@ def main():
     pcm_wip_file = f"_wip_pcm.dat"
     adpcm_wip_file = None
 
-  fps_detail = args.fps #FPS().get_fps_detail(256, args.fps)
+  fps_detail = args.fps
   if fps_detail is None:
     print("error: unknown fps")
     return 1
@@ -491,7 +455,7 @@ def main():
     return 1
 
   if stage3(output_bmp_dir, args.view_width, args.view_height, args.use_ibit, args.fps, args.pcm_freq, \
-            pcm_wip_file, adpcm_wip_file, vdt_data_file):
+            pcm_wip_file, adpcm_wip_file, args.comment, vdt_data_file):
     return 1
 
 #  if pcm_wip_file:
