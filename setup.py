@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="xmkvdt",
-    version="0.3.2",
+    version="0.3.3",
     author="tantanGH",
     author_email="tantanGH@github",
     license='MIT',
