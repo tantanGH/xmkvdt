@@ -236,10 +236,18 @@ class BMPtoVDT:
       if pcm_freq == 15625:
         frame_voice_size = 7800 // fps
       elif pcm_freq == 32000:
-        if fps == 15:
-          frame_voice_size = 64005 // fps * 2
-        else:
+        if fps == 3:
+          frame_voice_size = 63999 // fps * 2
+        elif fps == 6:
+          frame_voice_size = 63996 // fps * 2
+        elif fps == 12:
+          frame_voice_size = 63996 // fps * 2
+        elif fps == 15:
           frame_voice_size = 63990 // fps * 2
+        elif fps == 30:
+          frame_voice_size = 63990 // fps * 2
+        else:
+          frame_voice_size = 64000 // fps * 2     # 2/4/5/10/20fps
       else:
         frame_voice_size = pcm_freq // fps * 4
       
