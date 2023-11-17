@@ -438,12 +438,17 @@ def main():
 
   output_bmp_dir = "output_bmp"
 
+  vdt_data_file = f"{args.vdt_name}"
+  if vdt_data_file[-4:].upper() != ".VDT" and vdt_data_file[-4:].upper() != ".V16":
+    if args.pcm_freq == 15625:
+      vdt_data_file += ".VDT"
+    else:
+      vdt_data_file += ".V16"
+
   if args.pcm_freq == 15625:
-    vdt_data_file = f"{args.vdt_name}.VDT"
     pcm_wip_file = f"_wip_pcm.dat"
     adpcm_wip_file = f"_wip_adpcm.dat"
   else:
-    vdt_data_file = f"{args.vdt_name}.V16"
     pcm_wip_file = f"_wip_pcm.dat"
     adpcm_wip_file = None
 
