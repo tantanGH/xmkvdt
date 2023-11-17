@@ -26,4 +26,4 @@ or
 
 例：MP4から30FPS/32.0kHz のV16を生成する。輝度ビットを使い65536色とする。PCMの音量を0.8倍とする。
 
-    xmkvdt -fps 30 -ib -pv 0.8 hogehoge.mp4 hogehoge
+    xmkvdt -fps 30 -ib -pv 0.8 -pf 32000 hogehoge.mp4 hogehoge
